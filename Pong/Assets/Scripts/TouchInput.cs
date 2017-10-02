@@ -11,17 +11,17 @@ namespace Pong
         public enum playerNum { none, one, two };
         public playerNum player;
 
-        private RacketMovement racket;
+        private PlayerMovement playerMovement;
 
         private void Reset()
         {
-            racket = GetComponent<RacketMovement>();
+            playerMovement = GetComponent<PlayerMovement>();
         }
         // Use this for initialization
         void Start()
         {
-            if (racket == null)
-                racket = GetComponent<RacketMovement>();
+            if (playerMovement == null)
+                playerMovement = GetComponent<PlayerMovement>();
         }
 
         // Update is called once per frame
@@ -37,19 +37,19 @@ namespace Pong
         {
             if (Input.touchCount > 0)
             {
-                racket.MoveRacket(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position));
+                playerMovement.Move(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position));
             }
             else if (Input.touchCount == 0)
             {
-                racket.StopMovement();
+                playerMovement.StopMovement();
             }
             if (Input.GetMouseButton(0))
             {
-                racket.MoveRacket(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                playerMovement.Move(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             }
             else if (Input.GetMouseButtonUp(0))
             {
-                racket.StopMovement();
+                playerMovement.StopMovement();
             }
         }
 

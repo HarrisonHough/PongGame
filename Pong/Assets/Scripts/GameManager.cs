@@ -22,13 +22,13 @@ namespace Pong
         [SerializeField]
         private GameMenu gameMenu;
         [SerializeField]
-        private BallSpawner ballSpawner;
+        private Ball ball;
 
 
         private void Reset()
         {
             gameMenu = FindObjectOfType<GameMenu>();
-            ballSpawner = FindObjectOfType<BallSpawner>();
+            ball = FindObjectOfType<Ball>();
         }
         private void Awake()
         {
@@ -46,8 +46,8 @@ namespace Pong
         {
             if (gameMenu == null)
                 gameMenu = FindObjectOfType<GameMenu>();
-            if (ballSpawner == null)
-                ballSpawner = FindObjectOfType<BallSpawner>();
+            if (ball == null)
+                ball = FindObjectOfType<Ball>();
         }
 
         public void Player1ScoreAdd()
@@ -106,9 +106,12 @@ namespace Pong
         IEnumerator NextRound()
         {
             gameMenu.ToggleReadyText(true);
+            if (playerTwo.GetComponent<PlayerAI>() != null)
+                playerTwo.GetComponent<PlayerAI>().ResetAI();
             yield return new WaitForSeconds(roundDelay);
             gameMenu.ToggleReadyText(false);
-            ballSpawner.SpawnBall();
+            
+            ball.Restart();
         }
 
 

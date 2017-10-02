@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Pong_Web.unity
+- path: Assets/Scenes/PongStaging.unity
   isLoaded: 1
   isActive: 1

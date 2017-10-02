@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Pong
 {
@@ -10,11 +8,6 @@ namespace Pong
         public enum playerNum { none, one, two };
         public playerNum playersGoal;
 
-        // Use this for initialization
-        void Start()
-        {
-
-        }
 
         private void OnTriggerEnter2D(Collider2D other)
         {

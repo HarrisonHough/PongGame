@@ -92,9 +92,9 @@ public class PlaySpace : MonoBehaviour {
         yMin = Camera.main.ViewportToWorldPoint(Vector3.zero).y;
         yMax = Camera.main.ViewportToWorldPoint(Vector3.up).y;
 
-        Debug.Log("xMin = " + xMin);
-        Debug.Log("xMax" + xMax);
-        Debug.Log("Max size = " + (xMax - xMin));
+        //Debug.Log("xMin = " + xMin);
+        //Debug.Log("xMax" + xMax);
+        //Debug.Log("Max size = " + (xMax - xMin));
     }
 
 }

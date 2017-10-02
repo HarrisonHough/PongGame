@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IMovable<T> {
+namespace Pong
+{
+    public interface IMovable<T>
+    {
 
-    void Move(T moveVector);
-	
+        void Move(T moveVector);
+
+    }
 }
