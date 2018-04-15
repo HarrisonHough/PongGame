@@ -2,8 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// This class dynamically positions and resizes the 
+/// boundary colliders in world space by converting 
+/// screen coordinates to world coordinates
+/// </summary>
 public class PlaySpace : MonoBehaviour {
 
+    //reference to all 4 wall colliders
     [SerializeField]
     private BoxCollider2D topWall;
     [SerializeField]
@@ -13,22 +20,29 @@ public class PlaySpace : MonoBehaviour {
     [SerializeField]
     private BoxCollider2D rightWall;
 
+    //used to determine width of walls, can be changed in editor
     [SerializeField]
     private float wallWidth = 1f;
+
     [SerializeField]
     private bool adjustSprite = false;
     public static float xMin;
     public static float xMax;
     public static float yMin;
     public static float yMax;
-
-	// Use this for initialization
+    
+    /// <summary>
+    /// Used for initialization on scene start
+    /// </summary>
 	private void Start () {
 
         SetupPlaySpace();
 
 	}
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void SetupPlaySpace()
     {
         GetWorldPositionValues();
@@ -38,6 +52,9 @@ public class PlaySpace : MonoBehaviour {
         SetupRightWall();
     }
 
+    /// <summary>
+    /// Sets up the top wall colliders size and position
+    /// </summary>
     private void SetupTopWall()
     {
 
@@ -50,6 +67,9 @@ public class PlaySpace : MonoBehaviour {
         topWall.transform.position = new Vector3(xMin-1, yMax, 0f);
     }
 
+    /// <summary>
+    /// Sets up the bottom wall colliders size and position
+    /// </summary>
     private void SetupBottomWall()
     {
 
@@ -64,6 +84,9 @@ public class PlaySpace : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// Sets up the left wall colliders size and position
+    /// </summary>
     private void SetupLeftWall()
     {
         Vector2 size = new Vector2(wallWidth, yMax - yMin);
@@ -74,6 +97,9 @@ public class PlaySpace : MonoBehaviour {
         leftWall.transform.position = new Vector3(xMin, yMin);
     }
 
+    /// <summary>
+    /// Sets up the right wall colliders size and position
+    /// </summary>
     private void SetupRightWall()
     {
         Vector2 size = new Vector2(wallWidth, yMax - yMin);
@@ -85,6 +111,10 @@ public class PlaySpace : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// Converts the viewport boundary coordinates to world 
+    /// coordinates
+    /// </summary>
     private void GetWorldPositionValues()
     {
         xMin = Camera.main.ViewportToWorldPoint(Vector3.zero).x;

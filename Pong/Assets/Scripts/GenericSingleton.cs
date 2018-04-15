@@ -6,20 +6,24 @@ using UnityEngine;
 namespace Pong
 {
     /// <summary>
-    /// 
+    /// A generic abstract class used for the 
+    /// creation and enforcement of a singleton
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class GenericSingleton<T> : MonoBehaviour where T : Component
     {
-
+        
         private static T instance;
 
+        //publicly accessible reference to the instance
         public static T Instance
         {
             get
             {
+                //check if an instance already exists
                 if (instance == null)
                 {
+                    //if not create new instance
                     instance = FindObjectOfType<T>();
                     if (instance == null)
                     {
@@ -28,10 +32,14 @@ namespace Pong
                         instance = obj.AddComponent<T>();
                     }
                 }
+                //if instance exists return instance
                 return instance;
             }
         }
 
+        /// <summary>
+        /// Called on awake, before the start function
+        /// </summary>
         public virtual void Awake()
         {
             if (instance == null)
