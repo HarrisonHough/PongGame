@@ -67,7 +67,7 @@ namespace Pong
         /// <summary>
         /// Called once every frame
         /// </summary>
-        private void Update()
+        private void FixedUpdate()
         {
             //check veloctiy of last frame
             lastFrameVelocity = rb.velocity;
@@ -79,7 +79,12 @@ namespace Pong
         /// <param name="collision"></param>
         private void OnCollisionEnter2D(Collision2D collision)
         {
-                Bounce(collision.contacts[0].normal);
+            if(collision.gameObject.tag == "Player")
+            {
+                constantSpeed += 0.1f;
+            }
+            //Bounce(collision.contacts[0].normal);
+            Bounce(collision.GetContact(0).normal);
         }
 
         /// <summary>
@@ -105,6 +110,13 @@ namespace Pong
             }
             rb.velocity = velocity;
             //rb.velocity = direction * Mathf.Max(speed, minVelocity);
+        }
+
+        private void Bounce(Vector3 collisionNormal, Player player)
+        {
+
+
+
         }
 
         /// <summary>

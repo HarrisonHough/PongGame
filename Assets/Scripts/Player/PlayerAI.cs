@@ -19,6 +19,7 @@ namespace Pong
     {
 
         public float maxSpeed = 8f;
+        [SerializeField]
         private float speed = 0f;
         [SerializeField]
         private float acceleration = 1f;
@@ -26,11 +27,15 @@ namespace Pong
         [SerializeField]
         private Transform ball;
         [SerializeField]
-        private float playerSize = 1;
+        private float playerSizeX = 1;
         private bool activeAI = false;
         [SerializeField]
         private float detectRadius = 5f;
         private Rigidbody2D rigidbody;
+
+        [SerializeField]
+        private PlayerMovement movement;
+
 
         //[Tooltip("Offset for ball (Target to lerp to)")]
         private float xOffset;
@@ -51,32 +56,52 @@ namespace Pong
         {
             ball = FindObjectOfType<Ball>().GetComponent<Transform>();
             rigidbody = GetComponent<Rigidbody2D>();
-            StartCoroutine(TrackBall());
+            //StartCoroutine(TrackBall());
+            activeAI = true;
+        }
+        private void FixedUpdate()
+        {
+            //MoveTowardsBall();
         }
 
-        /* private void FixedUpdate()
+        private void LateUpdate()
         {
-            if (Mathf.Abs(Vector3.Distance(transform.position, ball.position)) > detectRadius)
+            
+            
+            if (activeAI)
             {
-                rigidbody.velocity = Vector3.zero;
-                return;
-            }
+                movement.Move(ball.position);
+                //MoveTowardsBall();
+                /*if (Mathf.Abs(Vector3.Distance(transform.position, ball.position)) > detectRadius)
+                {
+                    rigidbody.velocity = Vector3.zero;
+                    return;
+                }
 
-            if (ball.position.x > transform.position.x)
-            {
-                rigidbody.velocity = Vector2.Lerp(rigidbody.velocity, Vector2.right * speed, Time.deltaTime/ lerpSpeed );
-            }
-            else if (ball.position.x < transform.position.x)
-            {
-                rigidbody.velocity = Vector3.Lerp(rigidbody.velocity, Vector2.left * speed, Time.deltaTime / lerpSpeed );
-            }
-            else
-            {
+                if (ball.position.x > transform.position.x)
+                {
+                    rigidbody.velocity = Vector2.Lerp(rigidbody.velocity, Vector2.right * speed, Time.deltaTime / speed);
+                }
+                else if (ball.position.x < transform.position.x)
+                {
+                    rigidbody.velocity = Vector3.Lerp(rigidbody.velocity, Vector2.left * speed, Time.deltaTime / speed);
+                }
+                else
+                {
 
+                }*/
             }
-
             //if()
-        } */
+        }
+
+        private void MoveTowardsBall()
+        {
+            Vector3 targetPosition = transform.position;
+            targetPosition.x = Mathf.Lerp(targetPosition.x,ball.position.x, Time.deltaTime * speed);
+            targetPosition.x = Mathf.Clamp(targetPosition.x, -2.45f,2.45f);
+            transform.position = targetPosition;
+
+        }
 
             /// <summary>
             /// Runs when object collides with another
@@ -102,7 +127,7 @@ namespace Pong
                 if (Mathf.Abs(Vector3.Distance(transform.position, ball.position)) < detectRadius)
                 {
                     //clamp to play space
-                    targetPosition.x = Mathf.Clamp(ball.position.x + xOffset, PlaySpace.xMin + (playerSize / 2), PlaySpace.xMax - (playerSize / 2));
+                    targetPosition.x = Mathf.Clamp(ball.position.x + xOffset, PlaySpace.xMin + (playerSizeX / 2), PlaySpace.xMax - (playerSizeX / 2));
 
                     speed = Mathf.Lerp(speed, maxSpeed, Time.deltaTime * acceleration);
                     transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * speed);
@@ -110,7 +135,7 @@ namespace Pong
                 else
                 {
                     //clamp to play space
-                    targetPosition.x = Mathf.Clamp(ball.position.x + xOffset, PlaySpace.xMin + (playerSize / 2), PlaySpace.xMax - (playerSize / 2));
+                    targetPosition.x = Mathf.Clamp(ball.position.x + xOffset, PlaySpace.xMin + (playerSizeX / 2), PlaySpace.xMax - (playerSizeX / 2));
 
                     speed = Mathf.Lerp(speed, maxSpeed/3, Time.deltaTime * acceleration);
                     transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * speed);

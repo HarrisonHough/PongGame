@@ -17,10 +17,16 @@ namespace Pong
     /// </summary>
     public class PlayerMovement : MonoBehaviour
     {
-
+        [SerializeField]
         private float moveSpeed = 5f;
         private float currentTime = 0;
-        private float playerSize = 0.7f;
+        [SerializeField]
+        private float playerSizeX = 0.7f;
+
+        private void Start()
+        {
+            playerSizeX = transform.localScale.x;
+        }
 
         /// <summary>
         /// Moves towards target position at predefined speed
@@ -28,10 +34,9 @@ namespace Pong
         /// <param name="targetPosition"></param>
         public void Move(Vector3 targetPosition)
         {
-            
             targetPosition.z = 0;
             targetPosition.y = transform.position.y;
-            targetPosition.x = Mathf.Clamp(targetPosition.x, PlaySpace.xMin + (playerSize / 2), PlaySpace.xMax - (playerSize / 2));
+            targetPosition.x = Mathf.Clamp(targetPosition.x, PlaySpace.xMin + (playerSizeX / 2), PlaySpace.xMax - (playerSizeX / 2));
             currentTime += Time.deltaTime;
             transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed);
         }
