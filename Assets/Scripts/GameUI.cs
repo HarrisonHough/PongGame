@@ -6,9 +6,9 @@ using TMPro;
 public class GameUI : MonoBehaviour
 {
     [SerializeField]
-    private TextMeshProUGUI player1Score;
+    private TextMeshProUGUI _player1Score;
     [SerializeField]
-    private TextMeshProUGUI player2Score;
+    private TextMeshProUGUI _player2Score;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +18,7 @@ public class GameUI : MonoBehaviour
 
     public void UpdateScores(int score1, int score2)
     {
-        player1Score.text = score1.ToString();
-        player2Score.text = score2.ToString();
+        _player1Score.text = score1.ToString();
+        _player2Score.text = score2.ToString();
     }
 }

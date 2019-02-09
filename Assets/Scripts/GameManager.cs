@@ -10,8 +10,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     [SerializeField]
-    private int maxScore = 10;
-    private GameScene gameScene;
+    private int _maxScore = 10;
+    private GameScene GameScene;
     public GameState State;
 
     private void Awake()
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     public void OnGameSceneStart(GameScene gameScene)
     {
         //set reference to scene
-        this.gameScene = gameScene;
+        this.GameScene = gameScene;
         //reset game state
         State = GameState.InMenu;
         StopAllCoroutines();
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
 
     private bool CheckForWinner()
     {
-        if (gameScene.Player1.Score >= maxScore || gameScene.Player2.Score >= maxScore)
+        if (GameScene.Player1.Score >= _maxScore || GameScene.Player2.Score >= _maxScore)
         {
             return true;
         }
@@ -55,16 +55,16 @@ public class GameManager : MonoBehaviour
     {
         if (id == PlayerID.P1)
         {
-            gameScene.Player1.AddToScore();
+            GameScene.Player1.AddToScore();
         }
         else
         {
-            gameScene.Player2.AddToScore();
+            GameScene.Player2.AddToScore();
 
         }
 
         //update UI
-        gameScene.GameUI.UpdateScores(gameScene.Player1.Score, gameScene.Player2.Score);
+        GameScene.GameUI.UpdateScores(GameScene.Player1.Score, GameScene.Player2.Score);
     }
 
     IEnumerator GameRoutine()
@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        if (gameScene.Player1.Score >= maxScore)
+        if (GameScene.Player1.Score >= _maxScore)
         {
             //winner is player 1
         }

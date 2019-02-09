@@ -5,7 +5,7 @@ using UnityEngine;
 public class Goal : MonoBehaviour
 {
     
-    public PlayerID id;
+    public PlayerID Id;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -20,7 +20,7 @@ public class Goal : MonoBehaviour
     private void HandleBallCollision(Ball ball)
     {
         ball.Disable();
-        GameManager.Instance.AddToPlayerScore(id);
+        GameManager.Instance.AddToPlayerScore(Id);
     }
 
 }

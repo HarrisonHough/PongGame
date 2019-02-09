@@ -5,15 +5,15 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Ball : MonoBehaviour
 {
-    private Rigidbody2D rigidbody;
+    private Rigidbody2D _rigidbody;
     [SerializeField]
-    private Transform spawnPoint;
+    private Transform _spawnPoint;
     [SerializeField]
-    private float speed = 6f;
+    private float _speed = 6f;
     // Start is called before the first frame update
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
+        _rigidbody = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -28,8 +28,8 @@ public class Ball : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 velocity = rigidbody.velocity;
-        velocity.x = Mathf.Clamp(velocity.x, -speed, speed);
+        Vector2 velocity = _rigidbody.velocity;
+        velocity.x = Mathf.Clamp(velocity.x, -_speed, _speed);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -44,8 +44,8 @@ public class Ball : MonoBehaviour
                 yDirection = -1;
 
             //calculate direction
-            Vector2 direction = new Vector2(BounceFactor(paddle.transform.position,paddle.sizeX), yDirection).normalized;
-            rigidbody.velocity = direction * speed;
+            Vector2 direction = new Vector2(BounceFactor(paddle.transform.position,paddle.SizeX), yDirection).normalized;
+            _rigidbody.velocity = direction * _speed;
         }
     }
 
@@ -56,10 +56,10 @@ public class Ball : MonoBehaviour
 
     public void SpawnBallWithVelocity()
     {
-        rigidbody.velocity = Vector2.zero;
-        transform.position = spawnPoint.position;
+        _rigidbody.velocity = Vector2.zero;
+        transform.position = _spawnPoint.position;
         gameObject.SetActive(true);
-        rigidbody.velocity = RandomStartDirection() * speed;
+        _rigidbody.velocity = RandomStartDirection() * _speed;
     }
 
     private Vector2 RandomStartDirection()
@@ -72,17 +72,17 @@ public class Ball : MonoBehaviour
             randomDirection = -1;
         }
 
-        Vector2 newVelocity = new Vector2(0, randomDirection * speed);
+        Vector2 newVelocity = new Vector2(0, randomDirection * _speed);
         //get random X amount
         randomDirection = Random.Range(-1f, 1f);
-        newVelocity.x = randomDirection * speed;
+        newVelocity.x = randomDirection * _speed;
         //apply ratio
 
        float pythagoras = ((newVelocity.x * newVelocity.x) + (newVelocity.y * newVelocity.y));
-        if (pythagoras > (speed * speed))
+        if (pythagoras > (_speed * _speed))
         {
             float magnitude = Mathf.Sqrt(pythagoras);
-            float multiplier = speed / magnitude;
+            float multiplier = _speed / magnitude;
             newVelocity.x *= multiplier;
             newVelocity.y *= multiplier;
         }
@@ -92,8 +92,8 @@ public class Ball : MonoBehaviour
 
     public void Disable()
     {
-        rigidbody.velocity = Vector2.zero;
+        _rigidbody.velocity = Vector2.zero;
         gameObject.SetActive(false);
-        transform.position = spawnPoint.position;
+        transform.position = _spawnPoint.position;
     }
 }

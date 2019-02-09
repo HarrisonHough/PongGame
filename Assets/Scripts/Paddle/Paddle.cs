@@ -5,24 +5,23 @@ using UnityEngine;
 public class Paddle : MonoBehaviour
 {
     [SerializeField]
-    private string name;
-    public string Name { get { return name; } }
-    public float sizeX { get; private set; }
-    private int score = 0;
-    public int Score { get { return score; } }
+    private string _name;
+    public string Name { get { return _name; } }
+    public float SizeX { get; set; }
+    public int Score { get; set; }
     // Start is called before the first frame update
     void Start()
     {
-        sizeX = GetComponent<BoxCollider2D>().size.x;
+        SizeX = GetComponent<BoxCollider2D>().size.x;
     }
 
     public void AddToScore()
     {
-        score++;
+        Score++;
     }
 
     public void Reset()
     {
-        score = 0;
+        Score = 0;
     }
 }

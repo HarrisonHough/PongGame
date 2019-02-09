@@ -5,17 +5,17 @@ using UnityEngine;
 public class GameScene : MonoBehaviour
 {
     [SerializeField]
-    private Paddle player1;
-    public Paddle Player1 { get { return player1; } }
+    private Paddle _player1;
+    public Paddle Player1 { get { return _player1; } }
     [SerializeField]
-    private Paddle player2;
-    public Paddle Player2 { get { return player2; } }
+    private Paddle _player2;
+    public Paddle Player2 { get { return _player2; } }
     [SerializeField]
-    private Ball ball;
-    public Ball Ball { get { return ball; } }
+    private Ball _ball;
+    public Ball Ball { get { return _ball; } }
     [SerializeField]
-    private GameUI gameUI;
-    public GameUI GameUI { get { return gameUI; } }
+    private GameUI _gameUI;
+    public GameUI GameUI { get { return _gameUI; } }
 
     private void Start()
     {

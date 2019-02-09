@@ -5,11 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(PaddleMotor))]
 public class PlayerInput : MonoBehaviour
 {
-    private PaddleMotor motor;
+    private PaddleMotor _motor;
     // Start is called before the first frame update
     void Start()
     {
-        motor = GetComponent<PaddleMotor>();
+        _motor = GetComponent<PaddleMotor>();
     }
 
     // Update is called once per frame
@@ -20,6 +20,6 @@ public class PlayerInput : MonoBehaviour
 
     void GetInput()
     {
-        motor.SetDirection(Input.GetAxis("Horizontal"));
+        _motor.SetDirection(Input.GetAxis("Horizontal"));
     }
 }

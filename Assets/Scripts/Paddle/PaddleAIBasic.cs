@@ -6,47 +6,47 @@ using UnityEngine;
 public class PaddleAIBasic : MonoBehaviour
 {
     [SerializeField]
-    private PaddleMotor motor;
+    private PaddleMotor _motor;
     [SerializeField]
-    private float precision = 0.2f;
-    private Ball ball;
-    private Vector3 startPosition;
+    private float _precision = 0.2f;
+    private Ball _ball;
+    private Vector3 _startPosition;
     
     
     private void Start()
     {
-        motor = GetComponent<PaddleMotor>();
-        ball = FindObjectOfType<Ball>();
-        startPosition = transform.position;
+        _motor = GetComponent<PaddleMotor>();
+        _ball = FindObjectOfType<Ball>();
+        _startPosition = transform.position;
     }
     // Update is called once per frame
     void Update()
     {
-        if (ball == null || !ball.gameObject.activeSelf)
+        if (_ball == null || !_ball.gameObject.activeSelf)
         {
             //move to start position
             return;
         }
-        motor.MoveToPosition(ball.transform.position);
+        _motor.MoveToPosition(_ball.transform.position);
         //FollowBall();
 
     }
 
     private void FollowBall()
     {
-        if (Vector3.Distance(ball.transform.position, transform.position) < precision)
+        if (Vector3.Distance(_ball.transform.position, transform.position) < _precision)
         {
-            motor.SetDirection(0);
+            _motor.SetDirection(0);
             return;
         }
             
-        if (ball.transform.position.x < transform.position.x)
+        if (_ball.transform.position.x < transform.position.x)
         {
-            motor.SetDirection(-1);
+            _motor.SetDirection(-1);
         }
-        if (ball.transform.position.x > transform.position.x)
+        if (_ball.transform.position.x > transform.position.x)
         {
-            motor.SetDirection(1);
+            _motor.SetDirection(1);
         }
 
     }
