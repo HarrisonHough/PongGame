@@ -1,52 +1,26 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-/*
-* AUTHOR: Harrison Hough   
-* COPYRIGHT: Harrison Hough 2018
-* VERSION: 1.0
-* SCRIPT: Goal Class 
-*/
-
-namespace Pong
+public class Goal : MonoBehaviour
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class Goal : MonoBehaviour
+    
+    public PlayerID id;
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        //used to ID which player has scored the goal
-        public enum playerNum { none, one, two };
-        public playerNum playersGoal;
-
-
-        /// <summary>
-        /// Runs when object enters collider
-        /// </summary>
-        /// <param name="other"></param>
-        private void OnTriggerEnter2D(Collider2D other)
+        Ball ball = other.GetComponent<Ball>();
+        if (ball != null)
         {
-           //Debug.Log("Collision detected");
-            if (other.tag == "Ball")
-            {
-                //Debug.Log("collision with ball");
-                other.GetComponent<Ball>().StopAndHide();
-                GoalScored();
-            }
-        }
-
-        /// <summary>
-        /// Adds to players score
-        /// </summary>
-        private void GoalScored()
-        {
-            if (playersGoal == playerNum.one)
-            {
-                GameManager.instance.Player1ScoreAdd();
-            }
-            else
-            {
-                GameManager.instance.Player2ScoreAdd();
-            }
+            HandleBallCollision(ball);
         }
     }
+
+
+    private void HandleBallCollision(Ball ball)
+    {
+        ball.Disable();
+        GameManager.Instance.AddToPlayerScore(id);
+    }
+
 }

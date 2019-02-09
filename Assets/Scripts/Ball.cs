@@ -1,142 +1,99 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-/*
-* AUTHOR: Harrison Hough   
-* COPYRIGHT: Harrison Hough 2018
-* VERSION: 1.0
-* SCRIPT: Ball Class 
-*/
-
-namespace Pong
+[RequireComponent(typeof(Rigidbody2D))]
+public class Ball : MonoBehaviour
 {
-    /// <summary>
-    /// This class controls ball movement and interactions
-    /// with physics objects
-    /// </summary>
-    public class Ball : MonoBehaviour
+    private Rigidbody2D rigidbody;
+    [SerializeField]
+    private Transform spawnPoint;
+    [SerializeField]
+    private float speed = 6f;
+    // Start is called before the first frame update
+    void Start()
     {
+        rigidbody = GetComponent<Rigidbody2D>();
+    }
 
-        [SerializeField]
-        private float constantSpeed = 10f;
-
-        private Vector3 lastFrameVelocity;
-        private Rigidbody2D rb;
-        private SpriteRenderer sprite;
-
-        /// <summary>
-        /// Used for Initialization
-        /// </summary>
-        private void Start()
+    // Update is called once per frame
+    void Update()
+    {
+       
+        if(Input.GetKeyDown(KeyCode.Space))
         {
-            rb = GetComponent<Rigidbody2D>();
-            sprite = GetComponent<SpriteRenderer>();
-            sprite.enabled = false;
+            SpawnBallWithVelocity();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        Vector2 velocity = rigidbody.velocity;
+        velocity.x = Mathf.Clamp(velocity.x, -speed, speed);
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        Paddle paddle = collision.gameObject.GetComponent<Paddle>();
+        if (paddle != null)
+        {
+            float yDirection = 1;
+            //if this ball is below paddle at collision then it must
+            //be heading back in -y direction
+            if (transform.position.y < paddle.transform.position.y)
+                yDirection = -1;
+
+            //calculate direction
+            Vector2 direction = new Vector2(BounceFactor(paddle.transform.position,paddle.sizeX), yDirection).normalized;
+            rigidbody.velocity = direction * speed;
+        }
+    }
+
+    private float BounceFactor(Vector2 paddlePosition, float paddleWidth)
+    {
+        return (transform.position.x - paddlePosition.x) / paddleWidth;
+    }
+
+    public void SpawnBallWithVelocity()
+    {
+        rigidbody.velocity = Vector2.zero;
+        transform.position = spawnPoint.position;
+        gameObject.SetActive(true);
+        rigidbody.velocity = RandomStartDirection() * speed;
+    }
+
+    private Vector2 RandomStartDirection()
+    {
+        float randomDirection = 1;
+
+        //randomly negative
+        if (Random.Range(0, 2f) < 1)
+        {
+            randomDirection = -1;
         }
 
-        /// <summary>
-        /// reset position and display values
-        /// </summary>
-        public void Restart()
-        {
-            transform.position = Vector3.zero;
-            sprite.enabled = true;
+        Vector2 newVelocity = new Vector2(0, randomDirection * speed);
+        //get random X amount
+        randomDirection = Random.Range(-1f, 1f);
+        newVelocity.x = randomDirection * speed;
+        //apply ratio
 
-            StartRandomBallMovement();
+       float pythagoras = ((newVelocity.x * newVelocity.x) + (newVelocity.y * newVelocity.y));
+        if (pythagoras > (speed * speed))
+        {
+            float magnitude = Mathf.Sqrt(pythagoras);
+            float multiplier = speed / magnitude;
+            newVelocity.x *= multiplier;
+            newVelocity.y *= multiplier;
         }
 
-        /// <summary>
-        /// Start moving in random direction
-        /// </summary>
-        public void StartRandomBallMovement()
-        {
-            rb.velocity = new Vector3(RandomStartVelocity(), RandomStartVelocity(), 0);
-        }
+        return newVelocity.normalized;
+    }
 
-        /// <summary>
-        /// Stop movement and hide
-        /// </summary>
-        public void StopAndHide()
-        {
-            //Debug.Log("Stop and hide");
-            rb.velocity = Vector3.zero;
-            sprite.enabled = false;
-            
-        }
-
-        /// <summary>
-        /// Called once every frame
-        /// </summary>
-        private void FixedUpdate()
-        {
-            //check veloctiy of last frame
-            lastFrameVelocity = rb.velocity;
-        }
-
-        /// <summary>
-        /// Called on collisions
-        /// </summary>
-        /// <param name="collision"></param>
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            if(collision.gameObject.tag == "Player")
-            {
-                constantSpeed += 0.1f;
-            }
-            //Bounce(collision.contacts[0].normal);
-            Bounce(collision.GetContact(0).normal);
-        }
-
-        /// <summary>
-        /// Controls ad normalizes the angle at which the ball bounces
-        /// </summary>
-        /// <param name="collisionNormal"></param>
-        private void Bounce(Vector3 collisionNormal)
-        {
-            var direction = Vector3.Reflect(lastFrameVelocity.normalized, collisionNormal);
-
-
-            //Debug.Log("Out Direction: " + direction);
-            Vector3 velocity = Vector3.zero;
-            velocity.x = constantSpeed;
-            velocity.y = constantSpeed;
-            if (direction.x < 0)
-            {
-                velocity.x *= -1;
-            }
-            if (direction.y < 0)
-            {
-                velocity.y *= -1;
-            }
-            rb.velocity = velocity;
-            //rb.velocity = direction * Mathf.Max(speed, minVelocity);
-        }
-
-        private void Bounce(Vector3 collisionNormal, Player player)
-        {
-
-
-
-        }
-
-        /// <summary>
-        /// Randomly generates a velocity
-        /// </summary>
-        /// <returns></returns>
-        private float RandomStartVelocity()
-        {
-            
-            float randomVelocity = 1;
-
-            //randomly negative
-            if (Random.Range(-1f, 1f) < 0)
-            {
-                randomVelocity = -1;
-            }
-
-            randomVelocity *= constantSpeed;
-
-            return randomVelocity;
-        }
+    public void Disable()
+    {
+        rigidbody.velocity = Vector2.zero;
+        gameObject.SetActive(false);
+        transform.position = spawnPoint.position;
     }
 }
