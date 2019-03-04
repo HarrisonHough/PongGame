@@ -3,8 +3,11 @@
 # Pong Game Prototype
 A simple 2D remake of the old style Pong game
 
-## Description
-A simple 2D remake of the old style Pong game. I created this in just a few days, I created all scripts and art assets myself.
+# What I Learned
+* Basic player AI
+* Fake 2D Physics
 
-## Credits
-Developed by Harrison Hough
+## Design Patterns Used
+* Singletone
+* Component
+* Generic Class
